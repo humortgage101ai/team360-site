@@ -9,15 +9,24 @@ with every app deploy, a second GitHub Action had to exist purely to separate
 them again, and `deploy.sh`'s `git add -A` could sweep an unfinished draft into
 a release.
 
+## Layout
+
+    public/index.html   the site — everything served
+    wrangler.toml       deploy config
+
+Anything outside `public/` is repo furniture and is never served.
+
 ## Deploying
 
-Connected to Cloudflare Pages via its **Git integration** — pushing to `main`
-publishes. No Action, no API token, no secrets to rotate: Cloudflare watches
-the repo directly. Build command: none. Output directory: `/`.
+Connected to Cloudflare through its Git integration — pushing to `main`
+publishes. No GitHub Action, no API token, no secrets to rotate.
 
-The app is a separate Pages project serving `app.team360.team` from the
-`warriors-app` repo. Two projects because a Pages project serves one root, so
-the sales page and the app cannot both be `/` within one.
+Deployed as a **Worker serving static assets**, not as a Pages project.
+Cloudflare merged the two flows and its create-an-app wizard now runs
+`npx wrangler deploy`, which needs the `wrangler.toml` above; there is no
+Worker script, `[assets]` alone serves the directory.
+
+The app is separate, serving `app.team360.team` from the `warriors-app` repo.
 
 ## Pricing shown on the page
 

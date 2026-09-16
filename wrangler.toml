@@ -1,0 +1,15 @@
+# Static site served by Workers Static Assets.
+#
+# Cloudflare's "create an app" flow now runs `npx wrangler deploy`, which needs
+# this file. There is no Worker script — [assets] alone serves the directory,
+# which is the supported way to host a static site now that Pages and Workers
+# have been merged into one flow.
+#
+# Everything public lives in public/ so the repo's own files — this config, the
+# README — are not served from the site.
+
+name = "team360-site"
+compatibility_date = "2026-09-16"
+
+[assets]
+directory = "./public"
