@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Team360 — Everything between games, handled.</title>
+<meta name="description" content="Team360 runs the admin side of an adult hockey team: sign-ups, lineups, spares, payments and stats. Free for 60 days, then $15/month."/>
+
+<!-- Kept deliberately short. Captains share this link in group chats, so the
+     preview card is often the first thing anyone sees of the product. -->
+<meta property="og:title" content="Team360 — Everything between games, handled."/>
+<meta property="og:description" content="Sign-ups, lineups, spares, payments and stats for adult hockey teams. Free for 60 days."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://team360.team"/>
+<meta name="theme-color" content="#0B1320"/>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;600;700;800&family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* ═══════════════════════════════════════════════════════════════════
+   Team360 — marketing site
+
+   One page, no framework, no build step. It is a brochure with three
+   jobs: say what this is, show it, and get a captain to press start.
+   Everything else is subtraction.
+
+   Palette is the brand blue; the app's green stays reserved for things
+   that mean success — wins, paid, you're in — so the two never compete.
+   ═══════════════════════════════════════════════════════════════════ */
+
+:root{
+  --ink:#0B1320;         /* page */
+  --navy:#0A2342;        /* raised surfaces */
+  --line:#1c2a44;
+  --blue:#1E90FF;        /* the brand */
+  --blue-dk:#0d6fd4;
+  --white:#FFFFFF;
+  --text:#E8EDF6;
+  --muted:#93A2BC;
+  --dim:#66738C;
+  --win:#2fbf5f;         /* success only, never decoration */
+  --gold:#f0c060;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--ink);color:var(--text);
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  line-height:1.6;-webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,.mono{font-family:'Big Shoulders Display','Oswald','Arial Narrow',sans-serif;font-weight:700;line-height:1.04;letter-spacing:0}
+.amount,.count b,.ptitle{font-family:'Big Shoulders Display','Oswald',sans-serif;font-weight:700}
+a{color:inherit}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+.eyebrow{font-size:11px;font-weight:600;letter-spacing:2.4px;text-transform:uppercase;color:var(--blue);margin-bottom:14px}
+.lead{color:var(--muted);font-size:17px;max-width:56ch}
+.b{color:var(--blue)}
+
+/* ── Nav ─────────────────────────────────────────────────────────── */
+header{position:sticky;top:0;z-index:50;background:rgba(11,19,32,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+nav{display:flex;align-items:center;gap:14px;height:66px}
+.logo{display:flex;align-items:center;gap:11px;text-decoration:none;margin-right:auto}
+.logo .mark{width:34px;height:34px;flex:none}
+.logo .txt{font-family:'Big Shoulders Display','Oswald',sans-serif;font-weight:800;font-size:27px;letter-spacing:3px;color:var(--white);line-height:1}
+.navlinks{display:flex;gap:26px;font-size:14px;color:var(--muted)}
+.navlinks a{text-decoration:none}
+.navlinks a:hover{color:var(--white)}
+
+.btn{display:inline-block;font-family:'Oswald',sans-serif;font-weight:600;letter-spacing:1.4px;
+  text-transform:uppercase;font-size:14px;padding:12px 22px;border-radius:7px;text-decoration:none;
+  border:1px solid transparent;cursor:pointer;transition:.15s;white-space:nowrap}
+.btn-primary{background:var(--blue);color:#fff}
+.btn-primary:hover{background:var(--blue-dk)}
+.btn-ghost{border-color:var(--line);color:var(--text)}
+.btn-ghost:hover{border-color:var(--blue);color:var(--blue)}
+.btn-sm{font-size:12px;padding:9px 16px}
+
+/* ── Hero ────────────────────────────────────────────────────────── */
+.hero{padding:78px 0 64px;border-bottom:1px solid var(--line)}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center}
+.hero h1{font-size:60px;margin-bottom:20px}
+.hero .lead{font-size:19px;margin-bottom:28px}
+.cta-row{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
+.microcopy{font-size:13px;color:var(--dim)}
+
+.offer{display:inline-flex;align-items:center;gap:9px;background:rgba(30,144,255,.1);
+  border:1px solid rgba(30,144,255,.4);border-radius:999px;padding:6px 15px;font-size:13px;
+  color:var(--blue);margin-bottom:22px;font-weight:500}
+.offer b{color:var(--white);font-weight:600}
+
+/* ── Phone mock ──────────────────────────────────────────────────── */
+.phone{width:262px;background:#060b14;border:9px solid #16202f;border-radius:34px;
+  box-shadow:0 26px 60px rgba(0,0,0,.6);overflow:hidden}
+.phone-top{height:22px;background:#060b14;display:flex;align-items:center;justify-content:space-between;
+  padding:0 14px;font-size:9px;color:var(--dim)}
+.phone-body{background:#080f1e;padding:12px}
+.pcard{background:#0d1a2e;border:1px solid #1a2d4a;border-radius:10px;padding:11px;margin-bottom:9px}
+.pcard-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px}
+.ptitle{font-family:'Oswald',sans-serif;font-size:13px;letter-spacing:.5px;color:var(--white)}
+.ptag{font-size:8px;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+  background:var(--blue);color:#fff;padding:2px 7px;border-radius:3px}
+.pmeta{font-size:10px;color:var(--muted);line-height:1.5}
+.counts{display:flex;gap:7px;margin-top:9px}
+.count{flex:1;text-align:center;background:#08111f;border:1px solid #1a2d4a;border-radius:7px;padding:6px 2px}
+.count b{display:block;font-family:'Oswald',sans-serif;font-size:19px;color:var(--white);line-height:1}
+.count span{font-size:8px;letter-spacing:.8px;text-transform:uppercase;color:var(--dim)}
+.prow{display:flex;justify-content:space-between;align-items:center;font-size:11px;
+  padding:7px 0;border-bottom:1px solid #16263e}
+.prow:last-child{border-bottom:0}
+.pill{font-size:9px;font-weight:600;padding:2px 8px;border-radius:4px}
+.pill-due{background:rgba(224,96,96,.16);color:#ff8a8a}
+.pill-paid{background:rgba(47,191,95,.14);color:#6fdc93}
+.pbtn{background:var(--blue);color:#fff;text-align:center;font-family:'Oswald',sans-serif;
+  font-size:12px;letter-spacing:1.2px;padding:9px;border-radius:7px;margin-top:4px}
+
+/* ── Sections ────────────────────────────────────────────────────── */
+section{padding:76px 0;border-bottom:1px solid var(--line)}
+h2{font-size:40px;margin-bottom:14px}
+.sec-lead{margin-bottom:44px}
+
+.chaos{display:grid;grid-template-columns:1fr 1fr;gap:52px;align-items:center}
+.bubbles{display:flex;flex-direction:column;gap:9px;align-items:flex-end}
+.bub{background:#16202f;border-radius:16px 16px 3px 16px;padding:9px 15px;font-size:14px;
+  color:var(--muted);max-width:82%}
+.bub.you{background:var(--blue);color:#fff;border-radius:16px 16px 16px 3px;align-self:flex-start}
+.painlist{list-style:none;display:grid;gap:13px}
+.painlist li{display:flex;gap:12px;align-items:flex-start;font-size:15px}
+.painlist .x{color:var(--blue);flex:none;font-size:13px;margin-top:3px}
+
+
+/* ── Group chat vs lineup ─────────────────────────────────────────
+   The strongest thing this page can do is show the same job done two
+   ways. Feature lists ask the reader to imagine the benefit; this lets
+   them see it, and every captain recognises the left-hand column. */
+.versus{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
+.vs-col{background:var(--navy);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.vs-head{display:flex;align-items:center;gap:9px;padding:13px 18px;font-family:'Big Shoulders Display','Oswald',sans-serif;
+  font-weight:600;font-size:16px;letter-spacing:2px;text-transform:uppercase;border-bottom:1px solid var(--line)}
+.vs-head-bad{color:#ff9a9a;background:rgba(224,96,96,.07)}
+.vs-head-good{color:#6fdc93;background:rgba(47,191,95,.07)}
+.vs-dot{width:8px;height:8px;border-radius:50%;background:#e06060;flex:none}
+.vs-dot.good{background:var(--win)}
+
+.chat{padding:16px;display:flex;flex-direction:column;gap:7px;align-items:flex-start}
+.chat .bub{background:#16202f;border-radius:14px 14px 14px 3px;padding:8px 13px;font-size:13.5px;
+  color:var(--muted);max-width:88%}
+.chat .bub.you{background:var(--blue);color:#fff;border-radius:14px 14px 3px 14px;align-self:flex-end}
+.chat-meta{font-size:11px;color:var(--dim);font-style:italic;margin-top:4px;align-self:center}
+
+.lineup{padding:16px}
+.lu-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.lu-title{font-family:'Big Shoulders Display','Oswald',sans-serif;font-size:17px;color:var(--white);letter-spacing:.5px}
+.lu-pub{font-size:9.5px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;
+  background:rgba(47,191,95,.15);color:#6fdc93;padding:3px 9px;border-radius:4px}
+.lu-row{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid #16263e}
+.lu-lbl{font-family:'Big Shoulders Display','Oswald',sans-serif;font-size:11px;font-weight:600;
+  letter-spacing:1.6px;color:var(--dim);width:64px;flex:none}
+.lu-p{flex:1;background:#08111f;border:1px solid #1a2d4a;border-radius:6px;padding:6px 9px;
+  font-size:12.5px;color:var(--text);text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lu-p.on{border-color:var(--blue);color:#8ec8ff}
+.lu-div{height:1px;background:var(--line);margin:10px 0}
+.lu-foot{font-size:11px;color:var(--dim);margin-top:12px;text-align:center}
+
+@media(max-width:900px){.versus{grid-template-columns:1fr}}
+
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.feat{background:var(--navy);border:1px solid var(--line);border-radius:12px;padding:24px}
+.feat .ic{font-size:24px;margin-bottom:12px;display:block}
+.feat h3{font-size:19px;margin-bottom:7px;color:var(--white)}
+.feat p{font-size:14px;color:var(--muted)}
+
+.roles{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+@media(max-width:1100px){.roles{grid-template-columns:repeat(2,1fr)}}
+.role{background:var(--navy);border:1px solid var(--line);border-radius:12px;padding:26px}
+.role h3{font-size:22px;color:var(--blue);margin-bottom:4px}
+.role .sub{font-size:13px;color:var(--dim);margin-bottom:16px}
+.role ul{list-style:none;display:grid;gap:9px}
+.role li{font-size:14px;color:var(--muted);display:flex;gap:9px}
+.role li::before{content:"›";color:var(--blue);font-weight:700}
+
+/* ── Pricing ─────────────────────────────────────────────────────── */
+.prices{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;align-items:start}
+@media(max-width:1100px){.prices{grid-template-columns:repeat(2,1fr)}}
+.price{background:var(--navy);border:1px solid var(--line);border-radius:12px;padding:28px;position:relative}
+.price.hi{border-color:var(--blue);box-shadow:0 0 0 1px rgba(30,144,255,.28)}
+.price .flag{position:absolute;top:-11px;left:28px;background:var(--blue);color:#fff;font-size:10px;
+  font-weight:700;letter-spacing:1.4px;text-transform:uppercase;padding:4px 11px;border-radius:4px}
+.price h3{font-size:15px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
+.amount{font-family:'Oswald',sans-serif;font-size:50px;color:var(--white);line-height:1}
+.per{font-size:14px;color:var(--dim);margin-bottom:18px}
+.price ul{list-style:none;display:grid;gap:10px;margin-bottom:22px}
+.price li{font-size:14px;color:var(--muted);display:flex;gap:10px}
+.price li::before{content:"✓";color:var(--win);font-weight:700;flex:none}
+.strike{color:var(--dim);text-decoration:line-through;font-size:22px;margin-left:9px;font-family:'Oswald',sans-serif}
+
+
+.faq{display:grid;gap:2px;max-width:800px}
+details{background:var(--navy);border:1px solid var(--line);border-radius:10px;padding:18px 22px}
+details+details{margin-top:10px}
+summary{cursor:pointer;font-family:'Oswald',sans-serif;font-size:17px;color:var(--white);
+  letter-spacing:.3px;list-style:none}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";float:right;color:var(--blue);font-size:20px;line-height:1}
+details[open] summary::after{content:"–"}
+details p{margin-top:12px;font-size:14.5px;color:var(--muted)}
+
+.leagues{background:var(--navy);border:1px solid var(--line);border-radius:14px;padding:34px;
+  display:flex;gap:28px;align-items:center;flex-wrap:wrap}
+.leagues div{flex:1;min-width:280px}
+
+.final{text-align:center;padding:88px 0}
+.final h2{font-size:46px;margin-bottom:16px}
+.final .lead{margin:0 auto 28px}
+
+footer{padding:34px 0;font-size:13px;color:var(--dim);display:flex;gap:18px;
+  flex-wrap:wrap;align-items:center}
+footer a{color:var(--muted);text-decoration:none}
+footer a:hover{color:var(--blue)}
+
+@media(max-width:900px){
+  .hero-grid,.chaos{grid-template-columns:1fr;gap:38px}
+  .grid3,.roles,.prices{grid-template-columns:1fr}
+  .hero h1{font-size:40px}
+  h2{font-size:31px}
+  .final h2{font-size:34px}
+  .navlinks{display:none}
+  .hero{padding:52px 0 44px}
+  section{padding:56px 0}
+  .phone{margin:0 auto}
+}
+</style>
+</head>
+<body>
+
+<!-- ══ NAV ══════════════════════════════════════════════════════════ -->
+<header>
+  <div class="wrap">
+    <nav>
+      <a class="logo" href="#top">
+        <svg class="mark" viewBox="-40 -40 80 80" aria-hidden="true">
+          <path d="M -4.51 -25.61 A 26 26 0 1 1 4.51 -25.61" fill="none" stroke="#1E90FF" stroke-width="7"/>
+          <g transform="rotate(10)"><path d="M 10 -26 L -2.5 -32 L -2.5 -20 Z" fill="#FFFFFF"/></g>
+        </svg>
+        <span class="txt">TEAM<span class="b">360</span></span>
+      </a>
+      <div class="navlinks">
+        <a href="#how">How it works</a>
+        <a href="#features">Features</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#faq">FAQ</a>
+      </div>
+      <a class="btn btn-ghost btn-sm" href="https://app.team360.team">Log in</a>
+      <a class="btn btn-primary btn-sm" href="https://app.team360.team">Start free</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ══ HERO ═════════════════════════════════════════════════════════ -->
+<style>
+/* Hero lockup — the same three-part structure as the shirt print, so the
+   site and anything anyone is wearing are recognisably one thing. */
+.lockup{margin-bottom:26px;display:inline-block}
+.lockup .over{font-family:'Big Shoulders Display','Oswald',sans-serif;font-weight:600;font-size:19px;
+  letter-spacing:.34em;color:var(--muted);margin-bottom:2px;text-align:center}
+/* Tracking held tight and in ems, so the letters grow with the size instead of
+   the gaps between them. Stretching the spacing to fill the width was what made
+   this read as seven characters rather than one word. */
+.lockup .big{font-family:'Big Shoulders Display','Oswald',sans-serif;font-weight:800;font-size:84px;
+  letter-spacing:.035em;color:var(--white);line-height:.92}
+.lockup .rule{height:3px;background:var(--line);margin:7px 0 6px}
+.lockup .tag{font-family:'Big Shoulders Display','Oswald',sans-serif;font-weight:600;font-size:25px;
+  letter-spacing:.055em;color:var(--muted);text-align:center}
+@media(max-width:900px){.lockup .big{font-size:56px}.lockup .tag{font-size:17px}.lockup .over{font-size:14px}}
+</style>
+<div class="hero" id="top">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="offer" id="offer">🏒 <span>For the person who runs the team — from <b>$15/month</b></span></div>
+
+      <div class="lockup">
+        <div class="over">PROPERTY OF</div>
+        <div class="big">TEAM<span class="b">360</span></div>
+        <div class="rule"></div>
+        <div class="tag">RUN THE TEAM. <span class="b">PLAY THE GAME.</span></div>
+      </div>
+      <h1 style="font-size:34px;margin-bottom:16px">Everything between games, <span class="b">handled.</span></h1>
+      <p class="lead">You run the team. Sign-ups, lineups, spares, payments and stats — in one app
+        your whole roster can actually use, without a single person downloading anything.
+        Stop running your team from a group chat.</p>
+
+      <div class="cta-row">
+        <a class="btn btn-primary" href="https://app.team360.team">Start your team free</a>
+        <a class="btn btn-ghost" href="#how">See how it works</a>
+      </div>
+      <p class="microcopy">Free for 60 days. No card required. Set up in about ten minutes.</p>
+    </div>
+
+    <!-- Drawn rather than screenshotted so it stays honest as the app changes.
+         Swap for a real screenshot once there is one worth showing. -->
+    <div class="phone">
+      <div class="phone-top"><span>9:41</span><span>▮▮▮</span></div>
+      <div class="phone-body">
+        <div class="pcard">
+          <div class="pcard-h"><span class="ptitle">Game 1 · vs Demons</span><span class="ptag">Next</span></div>
+          <div class="pmeta">Tue, Sep 1 · 7:30 PM<br/>Burnaby 8 Rinks</div>
+          <div class="counts">
+            <div class="count"><b>12</b><span>In</span></div>
+            <div class="count"><b>3</b><span>Out</span></div>
+            <div class="count"><b>2</b><span>Waiting</span></div>
+          </div>
+          <div class="pbtn">I'M IN</div>
+        </div>
+        <div class="pcard">
+          <div class="pcard-h"><span class="ptitle">Your balance</span></div>
+          <div class="prow"><span>Season deposit</span><span class="pill pill-paid">Paid</span></div>
+          <div class="prow"><span>Deposit 2</span><span class="pill pill-due">$355 due</span></div>
+        </div>
+        <div class="pcard">
+          <div class="pcard-h"><span class="ptitle">Last game</span></div>
+          <div class="prow"><span>⭐ Player of the game</span><span style="color:#f0c060">A. Li</span></div>
+          <div class="prow"><span>Result</span><span style="color:#6fdc93">W 5–3</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ THE PROBLEM — same job, two ways ═════════════════════════════ -->
+<section id="how">
+  <div class="wrap">
+    <div class="eyebrow">The problem</div>
+    <h2>Sorting lines. <span class="b">Two ways.</span></h2>
+    <p class="lead sec-lead">Same team, same Thursday, same four defencemen. One of these took
+      forty minutes and still had three people confused at the rink.</p>
+
+    <div class="versus">
+      <!-- ── Left: the group chat ─────────────────────────────────── -->
+      <div class="vs-col">
+        <div class="vs-head vs-head-bad">
+          <span class="vs-dot"></span> In the group chat
+        </div>
+        <div class="chat">
+          <div class="bub">Who's playing D tonight?</div>
+          <div class="bub">I can play D if you're short</div>
+          <div class="bub you">Need one more back there 🙏</div>
+          <div class="bub">Jeff's out, kid's got a thing</div>
+          <div class="bub">Wait is Jeff in or out</div>
+          <div class="bub">Am I with Mike again?</div>
+          <div class="bub you">Yeah — no wait, Mike's up front</div>
+          <div class="bub">I thought I was centre??</div>
+          <div class="bub">😂😂</div>
+          <div class="bub">who's in net</div>
+          <div class="bub">can someone just post the lines</div>
+          <div class="chat-meta">…41 more messages</div>
+        </div>
+      </div>
+
+      <!-- ── Right: the app ───────────────────────────────────────── -->
+      <div class="vs-col">
+        <div class="vs-head vs-head-good">
+          <span class="vs-dot good"></span> In Team360
+        </div>
+        <div class="lineup">
+          <div class="lu-top">
+            <span class="lu-title">Game 4 · vs Cutting Edges</span>
+            <span class="lu-pub">Published</span>
+          </div>
+
+          <div class="lu-row"><span class="lu-lbl">LINE 1</span>
+            <span class="lu-p">Mike C.</span><span class="lu-p on">Andrew L.</span><span class="lu-p">Jordan W.</span></div>
+          <div class="lu-row"><span class="lu-lbl">LINE 2</span>
+            <span class="lu-p">Ray T.</span><span class="lu-p">Sam K.</span><span class="lu-p">Devin P.</span></div>
+          <div class="lu-row"><span class="lu-lbl">LINE 3</span>
+            <span class="lu-p">Colby M.</span><span class="lu-p">Nate F.</span><span class="lu-p">Ari S.</span></div>
+
+          <div class="lu-div"></div>
+
+          <div class="lu-row"><span class="lu-lbl">DEF 1</span>
+            <span class="lu-p">Jeff R.</span><span class="lu-p">Tom H.</span></div>
+          <div class="lu-row"><span class="lu-lbl">DEF 2</span>
+            <span class="lu-p">Priya N.</span><span class="lu-p">Wes A.</span></div>
+          <div class="lu-row"><span class="lu-lbl">GOALIE</span>
+            <span class="lu-p">Marcus D.</span></div>
+
+          <div class="lu-foot">Everyone notified · 13 skaters confirmed · 2 on the waitlist</div>
+        </div>
+      </div>
+    </div>
+
+    <p class="microcopy" style="margin-top:22px;text-align:center">
+      The captain dragged names into slots and pressed publish. Nobody had to ask again.
+    </p>
+  </div>
+</section>
+
+<!-- ══ FEATURES ═════════════════════════════════════════════════════ -->
+<section id="features">
+  <div class="wrap">
+    <div class="eyebrow">What it does</div>
+    <h2>Built for adult rec hockey. <span class="b">Not adapted for it.</span></h2>
+    <p class="lead sec-lead">Part-timers, spares, drop-in fees, deposit schedules, goalies who play free —
+      the things that make beer league different are the things this was built around.</p>
+
+    <div class="grid3">
+      <div class="feat"><span class="ic">📅</span>
+        <h3>Sign-ups that close themselves</h3>
+        <p>Full-timers are in by default. Part-timers and spares get a window that opens before each
+          game, with a waitlist once the roster fills. Nobody has to count.</p></div>
+      <div class="feat"><span class="ic">📋</span>
+        <h3>Line builder</h3>
+        <p>Drag players into forwards, defence and goalie. Publish it and the whole team sees where
+          they're playing. Captains can build it too, without admin access.</p></div>
+      <div class="feat"><span class="ic">💰</span>
+        <h3>Money that tracks itself</h3>
+        <p>Season deposits with due dates, spare fees charged automatically when someone plays,
+          partial payments that cascade to the next instalment, and a dated record of every one.</p></div>
+      <div class="feat"><span class="ic">🔔</span>
+        <h3>Notifications people act on</h3>
+        <p>Sign-ups opening, lineups posted, spots freeing up, results. Sent to phones, not to a
+          group chat where they scroll away in an hour.</p></div>
+      <div class="feat"><span class="ic">📊</span>
+        <h3>Stats, and who actually played</h3>
+        <p>Goals, assists, penalty minutes and games played — with playoff eligibility tracked
+          against your league's minimum, so there are no surprises in week ten.</p></div>
+      <div class="feat"><span class="ic">🏆</span>
+        <h3>Standings and season history</h3>
+        <p>Pull your league standings in automatically. Roll into a new season and every player's
+          record carries forward — including their player of the game awards.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ ROLES ════════════════════════════════════════════════════════ -->
+<section>
+  <div class="wrap">
+    <div class="eyebrow">Designed for everyone on the ice</div>
+    <h2>Four people. <span class="b">Four different apps.</span></h2>
+    <p class="lead sec-lead">Everyone signs in the same way and sees only what's theirs to deal with.</p>
+
+    <div class="roles">
+      <div class="role">
+        <h3>The GM</h3>
+        <div class="sub">Run the team</div>
+        <ul>
+          <li>Import a roster from a spreadsheet</li>
+          <li>Set deposits and chase nobody</li>
+          <li>See who's in before you need to ask</li>
+          <li>Invite spares in one tap</li>
+          <li>Hand the lineup to a captain</li>
+        </ul>
+      </div>
+      <div class="role">
+        <h3>The captain</h3>
+        <div class="sub">Build the lines</div>
+        <ul>
+          <li>Drag the lines without admin access</li>
+          <li>See who's confirmed before you build</li>
+          <li>Publish and the team is told</li>
+          <li>Set positions players actually play</li>
+          <li>No access to money or roster edits</li>
+        </ul>
+      </div>
+
+      <div class="role">
+        <h3>The player</h3>
+        <div class="sub">Just show up</div>
+        <ul>
+          <li>Sign in with last name and number</li>
+          <li>One tap to say you're in or out</li>
+          <li>See your line before you leave home</li>
+          <li>Know exactly what you owe</li>
+          <li>Your own stats and season history</li>
+        </ul>
+      </div>
+      <div class="role">
+        <h3>The spare</h3>
+        <div class="sub">Get the call</div>
+        <ul>
+          <li>Told the moment a spot opens</li>
+          <li>Claim it before the group chat does</li>
+          <li>Drop-in fee shown up front</li>
+          <li>Games played tracked properly</li>
+          <li>No chasing the captain</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PRICING ══════════════════════════════════════════════════════ -->
+<section id="pricing">
+  <div class="wrap">
+    <div class="eyebrow">Pricing</div>
+    <h2>From $15 a month. <span class="b">However many players.</span></h2>
+    <p class="lead sec-lead">Charged to the team, not per person — so adding a spare never costs
+      you more. Roughly what one player's drop-in fee costs you, for the whole season's admin.
+      Cancel any time; your data stays exportable.</p>
+
+    <div class="prices">
+      <div class="price">
+        <h3>Free trial</h3>
+        <div class="amount">$0</div>
+        <div class="per">for 60 days</div>
+        <ul>
+          <li>Every feature, no limits</li>
+          <li>Unlimited players and spares</li>
+          <li>No card required to start</li>
+          <li>Keep your data if you leave</li>
+        </ul>
+        <a class="btn btn-ghost" href="https://app.team360.team" style="width:100%;text-align:center">Start free</a>
+      </div>
+
+      <div class="price hi">
+        <div class="flag">Most teams</div>
+        <h3>Monthly</h3>
+        <div class="amount" id="monthly">$15</div>
+        <div class="per" id="monthly-note">per team / month</div>
+        <ul>
+          <li>Everything in the trial</li>
+          <li>Season rollover and history</li>
+          <li>Push notifications</li>
+          <li>League standings import</li>
+          <li>Support built into the app</li>
+        </ul>
+        <a class="btn btn-primary" href="https://app.team360.team" style="width:100%;text-align:center">Start your team</a>
+      </div>
+
+      <div class="price">
+        <h3>Annual</h3>
+        <div class="amount">$150</div>
+        <div class="per">per team / year — two months free</div>
+        <ul>
+          <li>Everything in monthly</li>
+          <li>Best for year-round teams</li>
+          <li>One invoice, one payment</li>
+          <li>Switch from monthly any time</li>
+        </ul>
+        <a class="btn btn-ghost" href="https://app.team360.team" style="width:100%;text-align:center">Choose annual</a>
+      </div>
+
+      <div class="price">
+        <h3>League</h3>
+        <div class="amount">Custom</div>
+        <div class="per">for multi-team operators</div>
+        <ul>
+          <li>Every team on one plan</li>
+          <li>One dashboard across teams</li>
+          <li>Standings straight from your feed</li>
+          <li>Priced on how many teams</li>
+        </ul>
+        <a class="btn btn-ghost" href="mailto:hu.mortgage101@gmail.com?subject=Team360%20for%20leagues" style="width:100%;text-align:center">Talk to us</a>
+      </div>
+    </div>
+
+    <p class="microcopy" style="margin-top:20px">
+      Every plan is the full app — no feature is held back for a higher tier.
+      The only thing that changes is how many teams it covers.
+    </p>
+  </div>
+</section>
+
+<!-- ══ LEAGUES ══════════════════════════════════════════════════════ -->
+<section>
+  <div class="wrap">
+    <div class="leagues">
+      <div>
+        <div class="eyebrow" style="margin-bottom:8px">For league operators</div>
+        <h2 style="font-size:28px;margin-bottom:10px">Running a league, not just a team?</h2>
+        <p style="color:var(--muted);font-size:15px">Every team in your league already solves this
+          the same way, badly, in eleven separate group chats. The single dashboard across all of
+          them is being built now, and we'd rather build it with a league than guess at what one
+          needs. Come in early and you help decide what it does — and what it costs.</p>
+      </div>
+      <a class="btn btn-primary" href="mailto:hu.mortgage101@gmail.com?subject=Team360%20for%20leagues">Talk to us</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FAQ ══════════════════════════════════════════════════════════ -->
+<section id="faq">
+  <div class="wrap">
+    <div class="eyebrow">Questions</div>
+    <h2>The things captains <span class="b">actually ask.</span></h2>
+    <div class="faq" style="margin-top:36px">
+
+      <details open><summary>Do my players need to download anything?</summary>
+        <p>No. They open a link, enter the team code and password once, and it works like an app.
+          On a phone they can add it to the home screen, which we'd recommend — that's also what
+          lets notifications work on an iPhone.</p></details>
+
+      <details><summary>How do players sign in?</summary>
+        <p>Last name and jersey number. No accounts to create, no passwords to forget, no email
+          addresses to collect. The team shares one code, which you send them once.</p></details>
+
+      <details><summary>Does it handle payments?</summary>
+        <p>It tracks them — who owes what, when it's due, what's been paid and when. It doesn't
+          process the money itself, so you keep collecting however you already do, whether that's
+          e-transfer or cash. Every payment is recorded with a date and who entered it.</p></details>
+
+      <details><summary>What happens when the season ends?</summary>
+        <p>You start the next one and the roster carries over, with each player's stats frozen into
+          their history. Anyone who still owes a deposit stays owing it — the money follows the
+          season it was collected for, not the season it was collected in.</p></details>
+
+      <details><summary>What if I already use a league site?</summary>
+        <p>Most leagues give you a schedule and standings and nothing else. Team360 handles the part
+          they don't — who's playing, what the lines are, and who's paid. If your league uses
+          SportNinja, standings pull in automatically.</p></details>
+
+      <details><summary>What happens after 60 days if I don't pay?</summary>
+        <p>Nothing gets deleted. The team goes read-only until you subscribe, and you can export
+          the whole season to a file at any point, subscribed or not.</p></details>
+
+      <details><summary>Is my team's data private?</summary>
+        <p>Each team's data is walled off from every other team at the database level. Within a team,
+          everyone shares one login, so anyone on your roster can see team information — rosters,
+          schedules, who owes what. Treat it as visible to your team, because it is.</p></details>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══ FINAL ════════════════════════════════════════════════════════ -->
+<div class="final">
+  <div class="wrap">
+    <h2>Run the team. <span class="b">Play the game.</span></h2>
+    <p class="lead">Ten minutes to set up. Sixty days to decide.</p>
+    <a class="btn btn-primary" href="https://app.team360.team" style="font-size:16px;padding:15px 34px">Start your team free</a>
+  </div>
+</div>
+
+<div style="border-top:1px solid var(--line)">
+  <div class="wrap">
+    <footer>
+      <svg width="22" height="22" viewBox="-40 -40 80 80" aria-hidden="true">
+        <path d="M -4.51 -25.61 A 26 26 0 1 1 4.51 -25.61" fill="none" stroke="#1E90FF" stroke-width="8"/>
+        <g transform="rotate(10)"><path d="M 10 -26 L -2.5 -32 L -2.5 -20 Z" fill="#FFFFFF"/></g>
+      </svg>
+      <span>Team360</span>
+      <span style="color:var(--line)">·</span>
+      <a href="https://app.team360.team">Sign in</a>
+      <a href="#pricing">Pricing</a>
+      <a href="mailto:hu.mortgage101@gmail.com">Contact</a>
+      <span style="margin-left:auto">© <span id="yr"></span> Team360</span>
+    </footer>
+  </div>
+</div>
+
+<script>
+/* The footer year is the only thing left for this page to compute. An
+   earlier version ran a countdown to an October 1 launch price; the standing
+   price is $15 now, so there is no deadline to advertise and nothing to
+   switch off. */
+(function(){
+  document.getElementById('yr').textContent = new Date().getFullYear();
+})();
+</script>
+</body>
+</html>
