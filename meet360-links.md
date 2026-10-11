@@ -15,7 +15,7 @@
 - Meet Info: https://meet360.ca/mc-meetinfo.html?club=vancouver-velocity-speed-skating-club
 - Stations: https://meet360.ca/mc-station.html?club=vancouver-velocity-speed-skating-club
 
-## Practice meet (test club)
+## Practice meet (test club, password 11111)
 
 ### Public
 
